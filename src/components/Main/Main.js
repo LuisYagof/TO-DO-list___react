@@ -32,11 +32,17 @@ class Main extends React.Component {
 
     drawTasks = () => {
         if (this.state.tasks.length > 0) {
-                return this.state.tasks
-                .filter(item => item.name.toLowerCase().includes(this.state.filter.toLowerCase()))
-                .map((item, i) =>
+            if (this.state.filter === "") {
+                return this.state.tasks.map((item, i) =>
                     <Post task={item.name} done={item.done} key={i} num={i} deleteTask={this.removeTask} editTask={this.updateTask} pri={item.pri} />
                 )
+            } else {
+                return this.state.tasks
+                    .filter(item => item.name.toLowerCase().includes(this.state.filter.toLowerCase()))
+                    .map((item, i) =>
+                        <Post task={item.name} done={item.done} key={i} num={i} deleteTask={this.removeTask} editTask={this.updateTask} pri={item.pri} />
+                    )
+            }
         } else {
             return <h4>¡Tareas completadas!</h4>
         }

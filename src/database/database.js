@@ -4,6 +4,7 @@ function getTasks() {
         done: false,
         pri: "baja"
         },
+        
         { name: "Dormir 24h",
         done: false,
         pri: "baja"
