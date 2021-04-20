@@ -1,0 +1,6 @@
+target.value
+setState
+handleClick / Submit / Change
+onChange
+export.default
+
