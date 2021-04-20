@@ -1,3 +1,7 @@
+*{
+  box-sizing: border-box;
+}
+
 #root{
   display: flex;
   justify-content: center;
@@ -13,11 +17,12 @@
 }
 
 main{
+  width: 90%;
   max-width: 1000px;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 90%;
+  align-items: center;
 }
 
 header{
@@ -58,10 +63,6 @@ hr{
   width: 2%;
 }
 
-main > form > input {
-  margin: 1%;
-}
-
 h4.true {
   color: rgb(69, 148, 148);
   text-decoration: line-through;
@@ -73,4 +74,18 @@ div.baja {
 
 div.alta {
   background-color: rgb(253, 171, 171);
+}
+
+form > div {
+  display: flex;
+  align-items: center;
+}
+
+form > div > input {
+  margin: 1%;
+}
+
+button.newTask {
+  min-width: 50px;
+  max-width: 100px;
 }

@@ -9,7 +9,9 @@ class Main extends React.Component {
         super(props)
 
         this.state = {
-            tasks: []
+            tasks: [],
+            editDet: false,
+            filter: ""
         }
     }
 
@@ -30,9 +32,11 @@ class Main extends React.Component {
 
     drawTasks = () => {
         if (this.state.tasks.length > 0) {
-            return this.state.tasks.map((item, i) =>
-                <Post task={item.name} done={item.done} key={i} num={i} deleteTask={this.removeTask} editTask={this.updateTask} pri={item.pri}/>
-            )
+                return this.state.tasks
+                .filter(item => item.name.toLowerCase().includes(this.state.filter.toLowerCase()))
+                .map((item, i) =>
+                    <Post task={item.name} done={item.done} key={i} num={i} deleteTask={this.removeTask} editTask={this.updateTask} pri={item.pri} />
+                )
         } else {
             return <h4>¡Tareas completadas!</h4>
         }
@@ -44,15 +48,36 @@ class Main extends React.Component {
         });
     }
 
+    detail = (event) => {
+        this.setState({ editDet: true })
+    }
+
+    maestro = (event) => {
+        this.setState({ editDet: false })
+    }
+
+    filterTasks = (event) => {
+        this.setState({ filter: event.target.value })
+    }
+
     render() {
-        return (
-            <main>
-                <h3>Éstas son tus tareas:</h3>
-                <hr />
-                {this.drawTasks()}
-                <Form addTask={this.addTask} />
-            </main>
-        )
+        if (!this.state.editDet) {
+            return (
+                <main>
+                    <h3>Éstas son tus tareas:</h3>
+                    <hr />
+                    {this.drawTasks()}
+                    <div>
+                        <button className="newTask" onClick={this.detail}>Nueva tarea</button>
+                        <input onChange={this.filterTasks} type="text" placeholder="Busca entre tus tareas" />
+                    </div>
+                </main>
+            )
+        } else {
+            return (
+                <Form addTask={this.addTask} maestro={this.maestro} />
+            )
+        }
     }
 }
 
