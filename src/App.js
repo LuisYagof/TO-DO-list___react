@@ -8,7 +8,7 @@ function App() {
     <div className="App">
       <Header brand="FasTask" />
       <Main />
-      <Footer brand="FasTask" />
+      {/* <Footer brand="FasTask" /> */}
     </div>
   );
 }

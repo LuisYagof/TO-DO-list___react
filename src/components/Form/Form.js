@@ -45,7 +45,7 @@ class Form extends React.Component {
             return (
                 <form>
                     <div>
-                        Nueva tarea: <input type="text" onChange={this.handleTask} />
+                        <input type="text" placeholder="Nueva tarea" onChange={this.handleTask} />
                         <button onClick={this.handleNewPost}>Añadir</button>
                     </div>
                     <button onClick={this.props.maestro}>Volver</button>
@@ -54,7 +54,8 @@ class Form extends React.Component {
         } else {
             return (
                 <>
-                    <div className={`taskBox ${this.state.task.pri}`}>
+                    <div className="taskBox">
+                        <img src={`http://localhost:3000/img/${this.state.task.pri}.svg`} alt="" />
                         <input type="text" className="inp" value={this.state.task.name} onChange={this.nameChange} />
                         <div>
                             <input type="checkbox" className="chk" onClick={this.doneChange} />

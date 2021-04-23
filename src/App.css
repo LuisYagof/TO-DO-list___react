@@ -18,8 +18,8 @@
 
 main{
   width: 90%;
-  background-image: url("http://localhost:3000/pattern.png");
-  background-repeat: repeat;
+  /* background-image: url("http://localhost:3000/img/pattern.png");
+  background-repeat: repeat; */
   padding: 0% 0 6% 0;
   max-width: 1000px;
   display: flex;

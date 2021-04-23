@@ -31,7 +31,8 @@ class Post extends React.Component {
     render() {
         return (
             <>
-                <div className={`taskBox ${this.state.task.pri}`}>
+                <div className="taskBox">
+                    <img src={`http://localhost:3000/img/${this.state.task.pri}.svg`} alt=""/>
                     <h5 className={`${this.state.task.done}`}>{this.props.task.name}</h5>
                     <div>
                         <input type="checkbox" className="chk" onClick={this.doneChange} />
