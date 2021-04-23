@@ -10,7 +10,9 @@ class Main extends React.Component {
 
         this.state = {
             tasks: [],
-            editDet: false,
+            createTaskDetail: false,
+            editTaskDetail: false,
+            editContent: {},
             filter: ""
         }
     }
@@ -21,26 +23,26 @@ class Main extends React.Component {
     }
 
     removeTask = (num) => {
-        let UpdTasks = this.state.tasks.filter((el, i) => i !== num)
+        let UpdTasks = this.state.tasks.filter((el) => el.id !== num)
         this.setState({ tasks: UpdTasks })
     }
 
-    updateTask = (num, text) => {
-        let removedTasks = this.state.tasks.splice(num, 1, text);
-        this.setState({ tasks: this.state.tasks })
+    updateTask = (task) => {
+        let updated = this.state.tasks.map(el => el.id == task.id ? el = task : el)
+        this.setState({ tasks: updated })
     }
 
     drawTasks = () => {
         if (this.state.tasks.length > 0) {
             if (this.state.filter === "") {
-                return this.state.tasks.map((item, i) =>
-                    <Post task={item.name} done={item.done} key={i} num={i} deleteTask={this.removeTask} editTask={this.updateTask} pri={item.pri} />
+                return this.state.tasks.map((item) =>
+                    <Post task={item} key={item.id} deleteTask={this.removeTask} editDet={this.editDet} updateTask={this.updateTask} />
                 )
             } else {
                 return this.state.tasks
                     .filter(item => item.name.toLowerCase().includes(this.state.filter.toLowerCase()))
-                    .map((item, i) =>
-                        <Post task={item.name} done={item.done} key={i} num={i} deleteTask={this.removeTask} editTask={this.updateTask} pri={item.pri} />
+                    .map((item) =>
+                        <Post task={item} key={item.id} deleteTask={this.removeTask} editDet={this.editDet} updateTask={this.updateTask} />
                     )
             }
         } else {
@@ -55,11 +57,21 @@ class Main extends React.Component {
     }
 
     detail = (event) => {
-        this.setState({ editDet: true })
+        this.setState({ createTaskDetail: true })
     }
 
     maestro = (event) => {
-        this.setState({ editDet: false })
+        this.setState({ createTaskDetail: false })
+    }
+
+    editDet = (item) => {
+        this.setState({ editContent: item })
+        this.setState({ editTaskDetail: true })
+    }
+
+    editMast = (event) => {
+        this.setState({ editContent: "" })
+        this.setState({ editTaskDetail: false })
     }
 
     filterTasks = (event) => {
@@ -67,21 +79,25 @@ class Main extends React.Component {
     }
 
     render() {
-        if (!this.state.editDet) {
+        if (!this.state.createTaskDetail && !this.state.editTaskDetail) {
             return (
                 <main>
                     <h3>Éstas son tus tareas:</h3>
                     <hr />
                     {this.drawTasks()}
-                    <div>
+                    <div className="searchBox">
                         <button className="newTask" onClick={this.detail}>Nueva tarea</button>
                         <input onChange={this.filterTasks} type="text" placeholder="Busca entre tus tareas" />
                     </div>
                 </main>
             )
-        } else {
+        } else if (this.state.createTaskDetail) {
             return (
                 <Form addTask={this.addTask} maestro={this.maestro} />
+            )
+        } else if (this.state.editTaskDetail) {
+            return (
+                <Form editMast={this.editMast} task={this.state.editContent} key={this.state.editContent.id} updateTask={this.updateTask} />
             )
         }
     }
