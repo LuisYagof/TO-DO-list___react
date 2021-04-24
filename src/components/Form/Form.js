@@ -17,7 +17,7 @@ const Form = (props) => {
 
     // ----------------------------------NEW POST
 
-    const handleTask = event => setNewTask({ name: event.target.value, done: false, pri: "baja", id: Date.now() })
+    const handleTask = event => setNewTask({ name: event.target.value, done: "uncheck", pri: "baja", id: Date.now() })
 
     const handleNewPost = event => {
         event.preventDefault()
@@ -29,7 +29,17 @@ const Form = (props) => {
 
     const nameChange = (event) => setTask({ name: event.target.value, done: task.done, pri: task.pri, id: task.id })
 
-    const doneChange = () => setTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
+    // const doneChange = () => setTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
+
+    const changeCheck = async () => {
+        if (task.done === "uncheck") {
+            await setTask({ name: task.name, done: "check", pri: task.pri, id: task.id })
+            await props.updateTask({ name: task.name, done: "check", pri: task.pri, id: task.id })
+        } else {
+            await setTask({ name: task.name, done: "uncheck", pri: task.pri, id: task.id })
+            await props.updateTask({ name: task.name, done: "uncheck", pri: task.pri, id: task.id })
+        }
+    }
 
     const priorityChange = (event) => setTask({ name: task.name, done: task.done, pri: event.target.value, id: task.id })
 
@@ -55,7 +65,8 @@ const Form = (props) => {
                     <img src={`http://localhost:3000/img/${task.pri}.svg`} alt="" />
                     <input type="text" className="inp" defaultValue={task.name} onChange={nameChange} />
                     <div>
-                        <input type="checkbox" className="chk" onClick={doneChange} />
+                        {/* <input type="checkbox" className="chk" onClick={doneChange} /> */}
+                        <img onClick={changeCheck} src={`http://localhost:3000/img/${task.done}.svg`} alt="" />
                         <button onClick={saveTask}>Guardar</button>
 
                         <select defaultValue="" onChange={priorityChange}>

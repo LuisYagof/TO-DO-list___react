@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Task from '../Task/Task';
 import Form from '../Form/Form';
 import getTasks from '../../database/database.js';
+import { Link } from "react-router-dom";
 
 const Main = (props) => {
     const [tasks, setTasks] = useState([]);
@@ -27,7 +28,7 @@ const Main = (props) => {
     }
 
     const updateTask = (task) => {
-        let updated = tasks.map(el => el.id == task.id ? el = task : el)
+        let updated = tasks.map(el => el.id === task.id ? el = task : el)
         setTasks(updated)
     }
 
@@ -76,13 +77,15 @@ const Main = (props) => {
     if (!flagDetail && !editFlag) {
         return (
             <main>
-                <h3>Éstas son tus tareas:</h3>
+                <h3>Éstas son tus tareas</h3>
                 <hr />
                 {drawTasks()}
                 <div className="searchBox">
                     <button className="newTask" onClick={detail}>Nueva tarea</button>
                     <input onChange={searchTasks} type="text" placeholder="Busca entre tus tareas" />
                 </div>
+                <hr/>
+                <button className="loginBtn"><Link to="/login">Login</Link></button>
             </main>
         )
     } else if (flagDetail) {

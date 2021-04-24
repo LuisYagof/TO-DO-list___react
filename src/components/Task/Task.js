@@ -5,18 +5,28 @@ const Task = (props) => {
     const [task, setTask] = useState(props.task);
 
     useEffect(() => {
-       console.log(`existo SOY ${task.name}`);
-       return () => {console.log(`me piro SOY ${task.name}`);}
+        console.log(`existo SOY ${task.name}`);
+        return () => { console.log(`me piro SOY ${task.name}`); }
     }, [])
 
     useEffect(() => {
-       console.log(`renderizo SOY ${task.name}`);
+        console.log(`renderizo SOY ${task.name}`);
     }, [props.task])
 
-    const doneChange = async () => {
-        await setTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
+    // const doneChange = async () => {
+    //     await setTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
 
-        await props.updateTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
+    //     await props.updateTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
+    // }
+
+    const changeCheck = async () => {
+        if (task.done === "uncheck") {
+            await setTask({ name: task.name, done: "check", pri: task.pri, id: task.id })
+            await props.updateTask({ name: task.name, done: "check", pri: task.pri, id: task.id })
+        } else {
+            await setTask({ name: task.name, done: "uncheck", pri: task.pri, id: task.id })
+            await props.updateTask({ name: task.name, done: "uncheck", pri: task.pri, id: task.id })
+        }
     }
 
     const priorityChange = async (event) => {
@@ -31,7 +41,8 @@ const Task = (props) => {
                 <img src={`http://localhost:3000/img/${task.pri}.svg`} alt="" />
                 <h5 className={`${task.done}`}>{props.task.name}</h5>
                 <div>
-                    <input type="checkbox" className="chk" onClick={doneChange} />
+                    <img onClick={changeCheck} src={`http://localhost:3000/img/${task.done}.svg`} alt="" />
+                    {/* <input type="checkbox" className="chk" onClick={doneChange} /> */}
                     <button onClick={() => props.editDet(task)}>Editar</button>
                     <button onClick={() => props.deleteTask(props.task.id)}>Borrar</button>
                     <select defaultValue="" onChange={priorityChange}>
