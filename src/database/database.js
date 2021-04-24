@@ -1,15 +1,20 @@
 function getTasks() {
     return [
-        { name: "Aprender React",
+        { name: "React Hooks",
         done: false,
         pri: "baja",
-        id: 1618826400
+        id: 1618826400000
         },
         
-        { name: "Dormir 24h",
+        { name: "Dormir 18h seguidas",
+        done: false,
+        pri: "alta",
+        id: 1618833600000},
+
+        { name: "Redux",
         done: false,
         pri: "baja",
-        id: 1618833600
+        id: 1618844400000
         }
     ]
 }

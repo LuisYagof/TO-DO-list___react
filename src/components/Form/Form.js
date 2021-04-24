@@ -1,78 +1,75 @@
 import React from 'react';
-// import './Form.css';
+import { useEffect, useState } from 'react';
 
-class Form extends React.Component {
-    constructor(props) {
-        super(props);
+const Form = (props) => {
+    const [newTask, setNewTask] = useState({});
+    const [task, setTask] = useState(props.task);
 
-        if (props.addTask) {
-            this.state = {
-                task: { name: "" }
-            }
-        } else {
-            this.state = {
-                task: props.task
-            }
-        }
-    }
+    useEffect(() => {
+        console.log(`existo EDITO/CREO ${JSON.stringify(task)} y ${JSON.stringify(newTask)}`);
+
+        return () => { console.log(`me piro EDITO/CREO ${JSON.stringify(task)} y ${JSON.stringify(newTask)}`); }
+    }, [])
+
+    useEffect(() => {
+        console.log(`renderizo EDITO/CREO ${JSON.stringify(task)} y ${JSON.stringify(newTask)}`);
+    }, [task, newTask])
 
     // ----------------------------------NEW POST
 
-    handleTask = event => this.setState({ task: { name: event.target.value, done: false, pri: "baja", id: Date.now() } })
+    const handleTask = event => setNewTask({ name: event.target.value, done: false, pri: "baja", id: Date.now() })
 
-    handleNewPost = event => {
+    const handleNewPost = event => {
         event.preventDefault()
-        this.props.addTask(this.state.task)
-        this.props.maestro()
+        props.addTask(newTask)
+        props.maestro()
     }
 
     // ---------------------------------EDIT POST
 
-    nameChange = (event) => this.setState({ task: { name: event.target.value, done: this.state.task.done, pri: this.state.task.pri, id: this.state.task.id } })
+    const nameChange = (event) => setTask({ name: event.target.value, done: task.done, pri: task.pri, id: task.id })
 
-    doneChange = (event) => this.setState({ task: { name: this.state.task.name, done: !this.state.task.done, pri: this.state.task.pri, id: this.state.task.id } })
+    const doneChange = () => setTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
 
-    priorityChange = (event) => this.setState({ task: { name: this.state.task.name, done: this.state.task.done, pri: event.target.value, id: this.state.task.id } })
+    const priorityChange = (event) => setTask({ name: task.name, done: task.done, pri: event.target.value, id: task.id })
 
-    saveTask = () => {
-        this.props.updateTask(this.state.task)
-        this.props.editMast()
+    const saveTask = () => {
+        props.updateTask(task)
+        props.editMast()
     }
 
-
-    render() {
-        if (this.props.addTask) {
-            return (
-                <form>
+    if (props.addTask) {
+        return (
+            <form>
+                <div>
+                    <input type="text" placeholder="Nueva tarea" onChange={handleTask} />
+                    <button onClick={handleNewPost}>Añadir</button>
+                </div>
+                <button onClick={props.maestro}>Volver</button>
+            </form>
+        )
+    } else {
+        return (
+            <>
+                <div className="taskBox">
+                    <img src={`http://localhost:3000/img/${task.pri}.svg`} alt="" />
+                    <input type="text" className="inp" defaultValue={task.name} onChange={nameChange} />
                     <div>
-                        <input type="text" placeholder="Nueva tarea" onChange={this.handleTask} />
-                        <button onClick={this.handleNewPost}>Añadir</button>
-                    </div>
-                    <button onClick={this.props.maestro}>Volver</button>
-                </form>
-            )
-        } else {
-            return (
-                <>
-                    <div className="taskBox">
-                        <img src={`http://localhost:3000/img/${this.state.task.pri}.svg`} alt="" />
-                        <input type="text" className="inp" value={this.state.task.name} onChange={this.nameChange} />
-                        <div>
-                            <input type="checkbox" className="chk" onClick={this.doneChange} />
-                            <button onClick={this.saveTask}>Guardar</button>
+                        <input type="checkbox" className="chk" onClick={doneChange} />
+                        <button onClick={saveTask}>Guardar</button>
 
-                            <select onChange={this.priorityChange}>
-                                <option value="" selected disabled hidden>Prioridad</option>
-                                <option value="baja">Baja</option>
-                                <option value="alta">Alta</option>
-                            </select>
-                        </div>
+                        <select defaultValue="" onChange={priorityChange}>
+                            <option value="" disabled hidden>Prioridad</option>
+                            <option value="baja">Baja</option>
+                            <option value="alta">Alta</option>
+                        </select>
                     </div>
-                    <button onClick={this.props.editMast}>Volver</button>
-                </>
-            )
-        }
+                </div>
+                <button onClick={props.editMast}>Volver</button>
+            </>
+        )
     }
+
 }
 
 export default Form;

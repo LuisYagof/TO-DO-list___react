@@ -38,12 +38,26 @@ footer {
   margin: 3%;
 }
 
+main > h3 {
+  color: cadetblue;
+  margin: 3% 0 2% 0;
+}
+
 button {
   border: none;
   border-radius: 5px;
   box-shadow: 0px 0px 15px -10px black;
   background-color: rgb(100, 100, 100);
   color: ivory;
+}
+
+button:focus{
+  outline: none;
+}
+
+button:hover{
+  transform: scale(1.02);
+  cursor: pointer;
 }
 
 input[type=text] {

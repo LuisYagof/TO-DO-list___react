@@ -1,12 +1,12 @@
 import './App.css';
 import Header from './components/Header/Header';
-import Footer from './components/Footer/Footer';
 import Main from './components/Main/Main';
+import Footer from './components/Footer/Footer';
 
 function App() {
   return (
     <div className="App">
-      <Header brand="FasTask" />
+      <Header brand="Hookies"/>
       <Main />
       {/* <Footer brand="FasTask" /> */}
     </div>

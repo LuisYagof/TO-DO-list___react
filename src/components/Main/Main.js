@@ -1,48 +1,69 @@
 import React from 'react';
 // import './Main.css';
-import Post from '../Post/Post';
+import { useEffect, useState } from 'react';
+import Task from '../Task/Task';
 import Form from '../Form/Form';
 import getTasks from '../../database/database.js';
 
-class Main extends React.Component {
-    constructor(props) {
-        super(props)
+const Main = (props) => {
+    const [tasks, setTasks] = useState([]);
+    const [flagDetail, setFlagDetail] = useState(false);
+    const [editFlag, setEditFlag] = useState(false);
+    const [editContent, setEditContent] = useState({});
+    const [search, setSearch] = useState("");
 
-        this.state = {
-            tasks: [],
-            createTaskDetail: false,
-            editTaskDetail: false,
-            editContent: {},
-            filter: ""
-        }
+    useEffect(() => {
+        const newTasks = getTasks()
+        setTasks([...tasks, ...newTasks]);
+    }, [])
+
+    const addTask = (newTask) => {
+        setTasks([...tasks, newTask]);
     }
 
-    async componentDidMount() {
-        const newTasks = await getTasks()
-        this.setState({ tasks: [...this.state.tasks, ...newTasks] });
+    const removeTask = (num) => {
+        let UpdTasks = tasks.filter((el) => el.id !== num)
+        setTasks(UpdTasks)
     }
 
-    removeTask = (num) => {
-        let UpdTasks = this.state.tasks.filter((el) => el.id !== num)
-        this.setState({ tasks: UpdTasks })
+    const updateTask = (task) => {
+        let updated = tasks.map(el => el.id == task.id ? el = task : el)
+        setTasks(updated)
     }
 
-    updateTask = (task) => {
-        let updated = this.state.tasks.map(el => el.id == task.id ? el = task : el)
-        this.setState({ tasks: updated })
+    const detail = () => {
+        setFlagDetail(true)
     }
 
-    drawTasks = () => {
-        if (this.state.tasks.length > 0) {
-            if (this.state.filter === "") {
-                return this.state.tasks.map((item) =>
-                    <Post task={item} key={item.id} deleteTask={this.removeTask} editDet={this.editDet} updateTask={this.updateTask} />
+    const maestro = () => {
+        setFlagDetail(false)
+    }
+
+    const editDet = (item) => {
+        setEditContent(item)
+        setEditFlag(true)
+    }
+
+    const editMast = () => {
+        setEditContent("")
+        setEditFlag(false)
+    }
+
+    const searchTasks = (event) => {
+        setSearch(event.target.value)
+    }
+
+    const drawTasks = () => {
+        if (tasks.length > 0) {
+            if (search === "") {
+                return tasks.map((item) =>
+                    <Task task={item} key={item.id} deleteTask={removeTask} editDet={editDet} updateTask={updateTask} />
                 )
             } else {
-                return this.state.tasks
-                    .filter(item => item.name.toLowerCase().includes(this.state.filter.toLowerCase()))
+                return tasks
+                    .filter(item => item.name.toLowerCase().includes(search.toLowerCase()))
                     .map((item) =>
-                        <Post task={item} key={item.id} deleteTask={this.removeTask} editDet={this.editDet} updateTask={this.updateTask} />
+                        <Task task={item} key={item.id} deleteTask={removeTask} editDet={editDet} updateTask={updateTask} />
                     )
             }
         } else {
@@ -50,57 +71,30 @@ class Main extends React.Component {
         }
     }
 
-    addTask = (newTask) => {
-        this.setState({
-            tasks: [...this.state.tasks, newTask]
-        });
+    // -----------------------------------------------RENDER
+
+    if (!flagDetail && !editFlag) {
+        return (
+            <main>
+                <h3>Éstas son tus tareas:</h3>
+                <hr />
+                {drawTasks()}
+                <div className="searchBox">
+                    <button className="newTask" onClick={detail}>Nueva tarea</button>
+                    <input onChange={searchTasks} type="text" placeholder="Busca entre tus tareas" />
+                </div>
+            </main>
+        )
+    } else if (flagDetail) {
+        return (
+            <Form addTask={addTask} maestro={maestro} />
+        )
+    } else if (editFlag) {
+        return (
+            <Form editMast={editMast} task={editContent} key={editContent.id} updateTask={updateTask} />
+        )
     }
 
-    detail = (event) => {
-        this.setState({ createTaskDetail: true })
-    }
-
-    maestro = (event) => {
-        this.setState({ createTaskDetail: false })
-    }
-
-    editDet = (item) => {
-        this.setState({ editContent: item })
-        this.setState({ editTaskDetail: true })
-    }
-
-    editMast = (event) => {
-        this.setState({ editContent: "" })
-        this.setState({ editTaskDetail: false })
-    }
-
-    filterTasks = (event) => {
-        this.setState({ filter: event.target.value })
-    }
-
-    render() {
-        if (!this.state.createTaskDetail && !this.state.editTaskDetail) {
-            return (
-                <main>
-                    <h3>Éstas son tus tareas:</h3>
-                    <hr />
-                    {this.drawTasks()}
-                    <div className="searchBox">
-                        <button className="newTask" onClick={this.detail}>Nueva tarea</button>
-                        <input onChange={this.filterTasks} type="text" placeholder="Busca entre tus tareas" />
-                    </div>
-                </main>
-            )
-        } else if (this.state.createTaskDetail) {
-            return (
-                <Form addTask={this.addTask} maestro={this.maestro} />
-            )
-        } else if (this.state.editTaskDetail) {
-            return (
-                <Form editMast={this.editMast} task={this.state.editContent} key={this.state.editContent.id} updateTask={this.updateTask} />
-            )
-        }
-    }
 }
 
 export default Main;
