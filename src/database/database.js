@@ -1,7 +1,7 @@
 function getTasks() {
     return [
         { name: "React Hooks",
-        done: "uncheck",
+        done: "check",
         pri: "baja",
         id: 1618826400000
         },
