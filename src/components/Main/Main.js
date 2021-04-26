@@ -14,8 +14,11 @@ const Main = (props) => {
     const [search, setSearch] = useState("");
 
     useEffect(() => {
-        const newTasks = getTasks()
-        setTasks([...tasks, ...newTasks]);
+        const fetchData = async () => {
+            const newTasks = await getTasks()
+            setTasks([...tasks, ...newTasks]);
+        }
+        fetchData()
     }, [])
 
     const addTask = (newTask) => {
@@ -84,7 +87,7 @@ const Main = (props) => {
                     <button className="newTask" onClick={detail}>Nueva tarea</button>
                     <input onChange={searchTasks} type="text" placeholder="Busca entre tus tareas" />
                 </div>
-                <hr/>
+                <hr />
                 <button className="loginBtn"><Link to="/login">Login</Link></button>
             </main>
         )
