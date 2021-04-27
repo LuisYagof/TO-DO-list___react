@@ -1,10 +1,10 @@
-import React from 'react';
-// import './Main.css';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Task from '../Task/Task';
 import Form from '../Form/Form';
 import getTasks from '../../database/database.js';
 import { Link } from "react-router-dom";
+// import { AuthContextConsumer } from "../../Contexts/authContext"
+import  AuthContext from "../../Contexts/authContext-F"
 
 const Main = (props) => {
     const [tasks, setTasks] = useState([]);
@@ -12,6 +12,8 @@ const Main = (props) => {
     const [editFlag, setEditFlag] = useState(false);
     const [editContent, setEditContent] = useState({});
     const [search, setSearch] = useState("");
+
+    const authContext = useContext(AuthContext);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -88,7 +90,7 @@ const Main = (props) => {
                     <input onChange={searchTasks} type="text" placeholder="Busca entre tus tareas" />
                 </div>
                 <hr />
-                <button className="loginBtn"><Link to="/login">Login</Link></button>
+                { !authContext.auth ? <button className="loginBtn"><Link to="/login">Login</Link></button> : <button className="loginBtn" onClick={authContext.toggleAuth}>Logout</button>}
             </main>
         )
     } else if (flagDetail) {

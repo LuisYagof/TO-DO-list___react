@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react'
 
 const Form = (props) => {
     const [newTask, setNewTask] = useState({});
@@ -28,8 +27,6 @@ const Form = (props) => {
     // ---------------------------------EDIT POST
 
     const nameChange = (event) => setTask({ name: event.target.value, done: task.done, pri: task.pri, id: task.id })
-
-    // const doneChange = () => setTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
 
     const changeCheck = async () => {
         if (task.done === "uncheck") {
@@ -65,7 +62,6 @@ const Form = (props) => {
                     <img src={`http://localhost:3000/img/${task.pri}.svg`} alt="" />
                     <input type="text" className="inp" defaultValue={task.name} onChange={nameChange} />
                     <div>
-                        {/* <input type="checkbox" className="chk" onClick={doneChange} /> */}
                         <img onClick={changeCheck} src={`http://localhost:3000/img/${task.done}.svg`} alt="" />
                         <button onClick={saveTask}>Guardar</button>
 

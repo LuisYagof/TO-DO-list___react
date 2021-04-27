@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Task = (props) => {
     const [task, setTask] = useState(props.task);
@@ -12,12 +11,6 @@ const Task = (props) => {
     useEffect(() => {
         console.log(`renderizo SOY ${task.name}`);
     }, [props.task])
-
-    // const doneChange = async () => {
-    //     await setTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
-
-    //     await props.updateTask({ name: task.name, done: !task.done, pri: task.pri, id: task.id })
-    // }
 
     const changeCheck = async () => {
         if (task.done === "uncheck") {
@@ -42,7 +35,6 @@ const Task = (props) => {
                 <h5 className={`${task.done}`}>{props.task.name}</h5>
                 <div>
                     <img onClick={changeCheck} src={`http://localhost:3000/img/${task.done}.svg`} alt="" />
-                    {/* <input type="checkbox" className="chk" onClick={doneChange} /> */}
                     <button onClick={() => props.editDet(task)}>Editar</button>
                     <button onClick={() => props.deleteTask(props.task.id)}>Borrar</button>
                     <select defaultValue="" onChange={priorityChange}>

@@ -1,3 +1,4 @@
+import React, { useState } from 'react'
 import './App.css';
 import Header from './components/Header/Header';
 import Main from './components/Main/Main';
@@ -9,26 +10,30 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import AuthContext from "./Contexts/authContext-F";
 
 function App() {
+  const [auth, setAuth] = useState(false)
+  const toggleAuth = () => setAuth(!auth)
+  const authContext = {
+    auth, toggleAuth
+  }
+
   return (
     <Router>
       <div className="App">
-        <Header brand="Hookies" />
-        {/* <Main /> */}
-        {/* <Footer brand="FasTask" /> */}
-        {/* <button>
-          <Link to="/login">Login</Link>
-        </button> */}
+        <AuthContext.Provider value={authContext}>
+          <Header brand="Hookies" />
 
-        <Switch>
-          <Route path="/login">
-            <Login />
-          </Route>
-          <Route exact path="/">
-            <Main />
-          </Route>
-        </Switch>
+          <Switch>
+            <Route path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/" component={Main} />
+          </Switch>
+          
+        </AuthContext.Provider >
+        {/* <Footer brand="FasTask" /> */}
       </div>
     </Router>
   );
